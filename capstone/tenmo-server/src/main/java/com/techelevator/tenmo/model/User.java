@@ -1,10 +1,7 @@
 package com.techelevator.tenmo.model;
 
-<<<<<<< HEAD
 import javax.validation.constraints.NotBlank;
-=======
 import java.math.BigDecimal;
->>>>>>> ea23a17d91f3b9b4bbe721c193af87113fd3838c
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
