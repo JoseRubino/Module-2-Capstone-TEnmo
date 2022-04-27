@@ -22,6 +22,13 @@ public class AuthenticationService {
         this.baseUrl = url;
     }
 
+    private HttpEntity<UserCredentials> createRequestEntity(UserCredentials credentials) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserCredentials> entity = new HttpEntity<>(credentials, headers);
+        return entity;
+    }
+
     public AuthenticatedUser login(UserCredentials credentials) {
         HttpEntity<UserCredentials> entity = createCredentialsEntity(credentials);
         AuthenticatedUser user = null;

@@ -85,7 +85,7 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
+        System.out.println("Your current balance is: " +);
 		
 	}
 
