@@ -1,6 +1,10 @@
 package com.techelevator.tenmo.model;
 
+<<<<<<< HEAD
 import javax.validation.constraints.NotBlank;
+=======
+import java.math.BigDecimal;
+>>>>>>> ea23a17d91f3b9b4bbe721c193af87113fd3838c
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,6 +19,10 @@ public class User {
    private String password;
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
+
+
+
+   private BigDecimal balance;
 
    public User() { }
 
@@ -67,10 +75,19 @@ public class User {
 
    public void setAuthorities(String authorities) {
       String[] roles = authorities.split(",");
-      for(String role : roles) {
+      for (String role : roles) {
          this.authorities.add(new Authority("ROLE_" + role));
       }
    }
+      public BigDecimal getBalance() {
+         return balance;
+      }
+
+      public void setBalance(BigDecimal balance) {
+         this.balance = balance;
+      }
+
+
 
    @Override
    public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserDao {
@@ -10,7 +11,16 @@ public interface UserDao {
 
     User findByUsername(String username);
 
+    User getUserByAccount(int id);
+
+    User findByUserId(int id);
+
+    BigDecimal getBalanceById(int id);
+
     int findIdByUsername(String username);
 
     boolean create(String username, String password);
+
+
+
 }

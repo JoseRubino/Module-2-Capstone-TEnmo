@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exceptions.AccountNotFoundException;
 import com.techelevator.tenmo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -20,7 +22,7 @@ public class JdbcUserDao implements UserDao {
 
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
+    };
 
     @Override
     public int findIdByUsername(String username) {
@@ -55,6 +57,39 @@ public class JdbcUserDao implements UserDao {
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
+
+    @Override
+    public User findByUserId(int Id) throws UsernameNotFoundException {
+        String sql = "SELECT tenmo_user.user_id" +
+                "tenmo_user.username, tenmo_user.password_hash, account.balance" +
+                "FROM tenmo_user" +
+                "JOIN account ON tenmo_user.user_id = account.user_id" +
+                "WHERE tenmo_user.user_id = ?";
+        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, Id);
+
+        if (row.next()) {
+            User user = mapRowToUser(row);
+
+            return user;
+        }
+        throw new UsernameNotFoundException("User ID " + Id + " was not found." );
+    }
+
+    @Override
+    public User getUserByAccount(int id) throws AccountNotFoundException {
+        User user = new User();
+
+        String sql = "SELECT tenmo_user.user_id FROM tenmo_user" +
+                " JOIN account ON tenmo_user.user_id = account.user_id WHERE account account.user_id = ?";
+        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, id);
+        if (row.next()) {
+            int userId = row.getInt("user_id");
+            user = findByUserId(userId);
+            return user;
+
+        }
+        throw new AccountNotFoundException();
+    }
     @Override
     public boolean create(String username, String password) {
 
@@ -79,6 +114,11 @@ public class JdbcUserDao implements UserDao {
         return true;
     }
 
+    @Override
+    public BigDecimal getBalanceById(int id) {
+        return null;
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getLong("user_id"));
@@ -86,6 +126,7 @@ public class JdbcUserDao implements UserDao {
         user.setPassword(rs.getString("password_hash"));
         user.setActivated(true);
         user.setAuthorities("USER");
+        user.setBalance(rs.getBigDecimal("balance"));
         return user;
     }
 }
