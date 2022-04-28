@@ -7,7 +7,9 @@ import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
+@Component
 public class jdbcTransferDao implements TransferDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -15,22 +17,26 @@ public class jdbcTransferDao implements TransferDao{
     private JdbcUserDao userDao;
 
     @Override
-    public Transfer get(int id) throws TransferNotFoundException {
+    public Transfer get(Long id) throws TransferNotFoundException {
         Transfer transfer = new Transfer();
         int accountFrom;
         int accountTo;
         User userFrom = new User();
         User userTo = new User();
 
-        String sql = "SELECT t.transfer_id, t.account_from, t.account_to " +
-                "tt.transfer_type_desc AS type, " +
-                "ts.transfer_status_desc AS status, " +
-                "t.amount" + "FROM transfers AS t " +
-                "JOIN transfer_types AS tt " +
-                "ON t.transfer_type_id = tt.transfer_type_i " +
-                "JOIN transfer_status AS TS " +
-                "ON t.transfer_status_id = ts.transfer_status_id " +
-                "WHERE t.transfer_id = ?";
+//        String sql = "SELECT t.transfer_id, t.account_from, t.account_to " +
+//                "tt.transfer_type_desc AS type, " +
+//                "ts.transfer_status_desc AS status, " +
+//                "t.amount" + "FROM transfers AS t " +
+//                "JOIN transfer_types AS tt " +
+//                "ON t.transfer_type_id = tt.transfer_type_i " +
+//                "JOIN transfer_status AS TS " +
+//                "ON t.transfer_status_id = ts.transfer_status_id " +
+//                "WHERE t.transfer_id = ?";
+        String sql = "select * from transfer\n" +
+                     "join transfer_type using(transfer_type_id)\n" +
+                     "join transfer_status using(transfer_status_id);";
+
         SqlRowSet row = jdbcTemplate.queryForRowSet(sql, id);
 
         if (row.next()){

@@ -17,10 +17,6 @@ public class User {
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
-
-
-   private BigDecimal balance;
-
    public User() { }
 
    public User(Long id, String username, String password, String authorities) {
@@ -76,14 +72,6 @@ public class User {
          this.authorities.add(new Authority("ROLE_" + role));
       }
    }
-      public BigDecimal getBalance() {
-         return balance;
-      }
-
-      public void setBalance(BigDecimal balance) {
-         this.balance = balance;
-      }
-
 
 
    @Override

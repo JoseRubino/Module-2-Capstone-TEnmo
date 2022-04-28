@@ -5,7 +5,7 @@ import com.techelevator.tenmo.model.Transfer;
 
 public interface TransferDao {
 
-    public Transfer get(int id) throws TransferNotFoundException;
+    public Transfer get(Long id) throws TransferNotFoundException;
     public Transfer create(Transfer transfer);
     public Transfer update(Transfer transfer);
 }
