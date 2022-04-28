@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/users/transfers")
+@RequestMapping("/transfers")
 public class TransferController {
     @Autowired
     TransferDao transferDao;
@@ -23,8 +24,10 @@ public class TransferController {
     UserDao userDao;
 
     @GetMapping()
-    public Transfer getTransfer(Principal principal) throws TransferNotFoundException {
-        User user = userDao.findByUsername(principal.getName());
-        return transferDao.get(user.getId());
+    public List<Transfer> getCurrentUserTransfers(Principal principal) throws TransferNotFoundException {
+        int id = userDao.findIdByUsername(principal.getName());
+        List<Transfer> transfers = userDao.getTransfersByUser(id);
+
+        return transfers;
     }
 }

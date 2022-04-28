@@ -95,7 +95,7 @@ public class JdbcUserDao implements UserDao {
         SqlRowSet row = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
 
         while(row.next()) {
-            Transfer transfer = transferDao.get(row.getLong("transfer_id"));
+            Transfer transfer = transferDao.get(row.getInt("transfer_id"));
             transfers.add(transfer);
         }
 

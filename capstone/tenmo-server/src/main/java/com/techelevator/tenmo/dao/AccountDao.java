@@ -7,7 +7,7 @@ public interface AccountDao {
 
     BigDecimal getCurrentBalance(Long userId);
 
-    BigDecimal updateBalance(long userId, BigDecimal balance);
+     BigDecimal updateBalance(long userId, BigDecimal balance);
 
 
 
