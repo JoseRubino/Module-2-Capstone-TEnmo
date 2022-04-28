@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.controller;
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import java.util.List;
 public class UserController {
 @Autowired
     UserDao userDao;
+@Autowired
+    AccountDao accountDao;
 
 
     @GetMapping()
@@ -35,12 +38,12 @@ public class UserController {
     @GetMapping("/balance")
     public BigDecimal getBalance (Principal principal){
     User user = userDao.findByUsername(principal.getName());
-    return user.getBalance();
+        return accountDao.getCurrentBalance(user.getId());
     }
 
     @GetMapping("/balance/{id}")
     public BigDecimal getBalance(@PathVariable int id){
     User user = userDao.findByUserId(id);
-    return user.getBalance();
+    return accountDao.getCurrentBalance(user.getId());
     }
 }

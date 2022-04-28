@@ -11,8 +11,12 @@ public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
 
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
-    public BigDecimal getCurrentBalance(int userId) {
+    public BigDecimal getCurrentBalance(Long userId) {
         String sql = "select balance from account " +
                      "join tenmo_user using(user_id) where user_id = ?;";
         Long balance = jdbcTemplate.queryForObject(sql, Long.class, userId);

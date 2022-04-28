@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface AccountDao {
 
-    BigDecimal getCurrentBalance(int userId);
+    BigDecimal getCurrentBalance(Long userId);
 
     List<String> getTransactionHistory();
 
