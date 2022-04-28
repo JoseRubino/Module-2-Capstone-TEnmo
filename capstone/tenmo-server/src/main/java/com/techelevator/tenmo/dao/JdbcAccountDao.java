@@ -26,12 +26,12 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public List<String> getTransactionHistory() {
+    public BigDecimal updateBalance(long userId, BigDecimal balance) {
         return null;
     }
 
-    @Override
-    public void sendBucksToAccount() {
-
     }
-}
+
+
+
+

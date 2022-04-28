@@ -7,6 +7,8 @@ public class Transfer {
     private String TransferType;
     private String TransferStatus;
     private String userFrom;
+    private String userTo;
+    private BigDecimal amount;
 
     public String getUserTo() {
         return userTo;
@@ -15,10 +17,6 @@ public class Transfer {
     public void setUserTo(String userTo) {
         this.userTo = userTo;
     }
-
-    private String userTo;
-    private BigDecimal amount;
-
 
     public int getId() {
         return id;
@@ -60,5 +58,9 @@ public class Transfer {
         this.amount = amount;
     }
 
+    @Override
+    public String toString() {
+        return "Transfer ID: " + this.getId() + ", Amount: $" + this.getAmount() + ", From: " + this.getUserFrom() + " To: " + this.getUserTo();
 
+    }
 }

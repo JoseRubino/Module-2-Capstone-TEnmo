@@ -7,7 +7,8 @@ public interface AccountDao {
 
     BigDecimal getCurrentBalance(Long userId);
 
-    List<String> getTransactionHistory();
+    BigDecimal updateBalance(long userId, BigDecimal balance);
 
-    void sendBucksToAccount();
+
+
 }

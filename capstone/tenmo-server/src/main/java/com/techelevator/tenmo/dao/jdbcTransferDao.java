@@ -1,6 +1,5 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.exceptions.InsufficentFundsException;
 import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
@@ -10,7 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 @Component
-public class jdbcTransferDao implements TransferDao{
+public class JdbcTransferDao implements TransferDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -24,15 +23,6 @@ public class jdbcTransferDao implements TransferDao{
         User userFrom = new User();
         User userTo = new User();
 
-//        String sql = "SELECT t.transfer_id, t.account_from, t.account_to " +
-//                "tt.transfer_type_desc AS type, " +
-//                "ts.transfer_status_desc AS status, " +
-//                "t.amount" + "FROM transfers AS t " +
-//                "JOIN transfer_types AS tt " +
-//                "ON t.transfer_type_id = tt.transfer_type_i " +
-//                "JOIN transfer_status AS TS " +
-//                "ON t.transfer_status_id = ts.transfer_status_id " +
-//                "WHERE t.transfer_id = ?";
         String sql = "select * from transfer\n" +
                      "join transfer_type using(transfer_type_id)\n" +
                      "join transfer_status using(transfer_status_id);";
@@ -43,8 +33,8 @@ public class jdbcTransferDao implements TransferDao{
             accountFrom = row.getInt("account_from");
             accountTo = row.getInt("account_to");
 
-            userFrom = userDao.getUserByAccountId(accountFrom);
-            userTo = userDao.getUserByAccountId(accountTo);
+            userFrom = userDao.getUserByAccount(accountFrom);
+            userTo = userDao.getUserByAccount(accountTo);
 
             transfer = mapRowToTransfer(row, userFrom.getUsername(), userTo.getUsername());
             return transfer;
@@ -62,6 +52,10 @@ public class jdbcTransferDao implements TransferDao{
     public Transfer update(Transfer transfer) {
         return null;
     }
+
+
+
+
     private Transfer mapRowToTransfer(SqlRowSet row, String userFrom, String userTo) {
         Transfer transfer = new Transfer();
         transfer.setId(row.getInt("transfer_id"));
