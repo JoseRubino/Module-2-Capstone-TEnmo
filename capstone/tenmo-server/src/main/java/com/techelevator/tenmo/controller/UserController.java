@@ -23,7 +23,7 @@ public class UserController {
     UserDao userDao;
 
 
-@GetMapping()
+    @GetMapping()
     public List<User> getAll()
     {
         List<User> users = userDao.findAll();
@@ -37,6 +37,7 @@ public class UserController {
     User user = userDao.findByUsername(principal.getName());
     return user.getBalance();
     }
+
     @GetMapping("/balance/{id}")
     public BigDecimal getBalance(@PathVariable int id){
     User user = userDao.findByUserId(id);

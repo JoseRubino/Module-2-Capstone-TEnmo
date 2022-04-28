@@ -1,7 +1,6 @@
 package com.techelevator.tenmo.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -11,6 +10,7 @@ import java.util.List;
 public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
+
     @Override
     public BigDecimal getCurrentBalance(int userId) {
         String sql = "select balance from account " +

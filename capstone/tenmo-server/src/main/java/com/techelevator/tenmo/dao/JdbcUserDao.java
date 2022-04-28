@@ -29,7 +29,10 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User findByUserId(int id) {
-        return null;
+        String sql = "select * from tenmo_user where user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
+        User user = mapRowToUser(result);
+        return user;
     }
 
     @Override
