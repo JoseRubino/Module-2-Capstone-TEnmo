@@ -21,9 +21,8 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/transfers")
 public class TransferController {
-    @Autowired
+    
     AccountDao accountDao;
-    @Autowired
     TransferDao transferDao;
 
     @ResponseStatus(HttpStatus.CREATED)
