@@ -27,7 +27,6 @@ public class UserController {
     public List<User> getAll()
     {
         List<User> users = userDao.findAll();
-
         return users;
     }
 
