@@ -43,11 +43,11 @@ public class UserController {
     User user = userDao.getUserByUserId(id);
     return accountDao.getCurrentBalance(user.getId());
     }
-    @RequestMapping(path="/account/{id}", method = RequestMethod.GET)
+    @GetMapping(path="/account/{id}")
     public Account getAccountByUserId(@PathVariable int id) {
         return accountDao.getAccountByUserID(id);
     }
-    @RequestMapping(path="/{id}", method = RequestMethod.GET)
+    @GetMapping(path="/{id}")
     public User getUserByUserId(@PathVariable int id) {
         return userDao.getUserByUserId(id);
     }
