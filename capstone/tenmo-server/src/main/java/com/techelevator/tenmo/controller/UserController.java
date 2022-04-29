@@ -23,7 +23,7 @@ public class UserController {
     AccountDao accountDao;
 
 
-    @GetMapping()
+    @RequestMapping()
     public List<User> getAll()
     {
         List<User> users = userDao.findAll();
@@ -46,6 +46,7 @@ public class UserController {
     public Account getAccountByUserId(@PathVariable int id) {
         return accountDao.getAccountByUserID(id);
     }
+
     @GetMapping(path="/{id}")
     public User getUserByUserId(@PathVariable int id) {
         return userDao.getUserByUserId(id);

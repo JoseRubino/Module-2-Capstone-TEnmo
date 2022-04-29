@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import org.springframework.http.HttpEntity;
@@ -27,6 +28,16 @@ public class AccountService {
         BigDecimal balance = restTemplate.exchange(baseUrl + "users/balance?id=" + user.getUser().getId(),
                 HttpMethod.GET, entity, BigDecimal.class).getBody();
         System.out.println("Your current balance is: " + balance);
+    }
+
+    public Account getAccountByUserId(AuthenticatedUser user) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setBearerAuth(user.getToken());
+        HttpEntity<AuthenticatedUser> entity = new HttpEntity<>(user, httpHeaders);
+
+        return restTemplate.exchange(baseUrl + "users/account/" + user.getUser().getId(), HttpMethod.GET, entity, Account.class).getBody();
+
     }
 
 }

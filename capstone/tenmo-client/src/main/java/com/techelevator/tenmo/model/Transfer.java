@@ -10,6 +10,12 @@ public class Transfer {
     private int accountTo;
     private BigDecimal amount;
 
+    public Transfer(Account fromAccount, Account toAccount, BigDecimal amount) {
+        accountFrom = fromAccount.getAccountId();
+        accountTo = toAccount.getAccountId();
+        this.amount = amount;
+    }
+
     public int getTransferId() {
         return transferId;
     }

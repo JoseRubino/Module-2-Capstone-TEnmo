@@ -21,11 +21,11 @@ public class UserService {
     }
 
 
-    public List<User> getAllUsers(AuthenticatedUser authenticatedUser) {
+    public User[] getAllUsers(AuthenticatedUser authenticatedUser) {
 
-        List<User> users = null;
+        User[] users = null;
         try {
-          users = restTemplate.exchange(baseUrl + "/users", HttpMethod.GET, makeEntity(authenticatedUser), List.class).getBody();
+          users = restTemplate.exchange(baseUrl + "/users", HttpMethod.GET, makeEntity(authenticatedUser), User[].class).getBody();
 
         } catch (RestClientResponseException e) {
             System.out.println("Could not complete request");
@@ -34,11 +34,16 @@ public class UserService {
         }
         return users;
     }
+    public AuthenticatedUser getUserByUserId(AuthenticatedUser user, int userId) {
 
- private HttpEntity makeEntity(AuthenticatedUser authenticatedUser) {
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.setBearerAuth(authenticatedUser.getToken());
-    HttpEntity entity = new HttpEntity(httpHeaders);
-    return entity;
-}}
+        HttpEntity<AuthenticatedUser> entity = makeEntity(user);
+        return restTemplate.exchange(baseUrl + "users/" + userId, HttpMethod.GET, entity, AuthenticatedUser.class).getBody();
+    }
+
+    private HttpEntity<AuthenticatedUser> makeEntity(AuthenticatedUser authenticatedUser) {
+       HttpHeaders httpHeaders = new HttpHeaders();
+       httpHeaders.setBearerAuth(authenticatedUser.getToken());
+       return new HttpEntity<AuthenticatedUser>(authenticatedUser, httpHeaders);
+    }
+}
 

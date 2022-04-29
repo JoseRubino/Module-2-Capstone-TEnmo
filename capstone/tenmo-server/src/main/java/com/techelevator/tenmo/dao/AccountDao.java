@@ -13,6 +13,10 @@ public interface AccountDao {
     Account getAccountByAccountID(int accountId);
 
     void updateAccount(Account accountToUpdate);
+
+    void depositToAccount(Account accountToUpdate, BigDecimal amount);
+
+    void withdrawFromAccount(Account accountToUpdate, BigDecimal amount);
 }
 
 

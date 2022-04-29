@@ -15,8 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TransferService {
-    private String baseUrl;
-    private RestTemplate restTemplate = new RestTemplate();
+    private final String baseUrl;
+    private final RestTemplate restTemplate = new RestTemplate();
     private AuthenticatedUser user = null;
 
     public TransferService(String url) {
@@ -45,10 +45,11 @@ public class TransferService {
         headers.setBearerAuth(authenticatedUser.getToken());
         HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
-        String url = baseUrl + "users/transfers" + transfer.getTransferId();
+        String url = baseUrl + "transfers/" + transfer.getTransferId();
 
         try {
-            restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class);
+            Transfer newTransfer = restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class).getBody();
+
         } catch(RestClientResponseException e) {
             if (e.getMessage().contains("You're broke, bud")) {
                 System.out.println("You don't have enough money for that transaction.");

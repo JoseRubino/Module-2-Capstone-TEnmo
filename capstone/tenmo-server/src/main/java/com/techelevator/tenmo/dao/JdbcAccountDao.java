@@ -1,7 +1,6 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Balance;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -50,22 +49,33 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public void updateAccount(Account accountToUpdate) {
+    public void updateAccount(Account accountToUpdate) {}
+
+    @Override
+    public void depositToAccount(Account accountToUpdate, BigDecimal amount) {
         String sql = "UPDATE accounts " +
                 "SET balance = ? " +
                 "WHERE account_id = ?";
 
-        jdbcTemplate.update(sql, accountToUpdate.getBalance().getBalance(), accountToUpdate.getAccountId());
+        jdbcTemplate.update(sql, accountToUpdate.getBalance().add(amount), accountToUpdate.getAccountId());
+    }
+    @Override
+    public void withdrawFromAccount(Account accountToUpdate, BigDecimal amount) {
+        String sql = "UPDATE accounts " +
+                "SET balance = ? " +
+                "WHERE account_id = ?";
+
+        jdbcTemplate.update(sql, accountToUpdate.getBalance().subtract(amount), accountToUpdate.getAccountId());
     }
 
     private Account mapResultsToAccount(SqlRowSet result) {
         int accountId = result.getInt("account_id");
         int userAccountId = result.getInt("user_id");
-
-        Balance balance = new Balance();
-        String accountBalance = result.getString("balance");
-        balance.setBalance(new BigDecimal(accountBalance));
-        return new Account(accountId, userAccountId, balance);
+        BigDecimal accountBalance = new BigDecimal(result.getInt("balance"));
+//        Balance balance = new Balance();
+//        String accountBalance = result.getString("balance");
+//        balance.setBalance(new BigDecimal(accountBalance));
+        return new Account(accountId, userAccountId, accountBalance);
     }
     }
 

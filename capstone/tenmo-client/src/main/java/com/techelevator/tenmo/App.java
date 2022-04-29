@@ -1,12 +1,14 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class App {
@@ -105,20 +107,26 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+        User[] users = userService.getAllUsers(currentUser);
+        for (User user : users) {
+            if (!user.getId().equals(currentUser.getUser().getId())) {
+                System.out.println(user.getId() + " " + user.getUsername());
+            }
+        }
+        int senderId = consoleService.promptForInt("Please select ID of the user you want to send bucks to: ");
+
+        BigDecimal sendAmount = consoleService.promptForBigDecimal("Please enter how much dollar you want to sned: ");
+
+        transferService.createTransfer(currentUser, new Transfer(accountService.getAccountByUserId(currentUser),
+                accountService.getAccountByUserId(userService.getUserByUserId(currentUser, senderId)), sendAmount));
 		
 	}
 
 	private void requestBucks() {
-        List<User> users = userService.getAllUsers(currentUser);
 
-
-
-        userService.getAllUsers(currentUser);
-        System.out.println(userService.getAllUsers(currentUser));
-        }
+    }
 		
-	}
+}
 
 
 
