@@ -5,10 +5,9 @@ import com.techelevator.tenmo.model.Balance;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.util.List;
+
 
 @Component
 public class JdbcAccountDao implements AccountDao {

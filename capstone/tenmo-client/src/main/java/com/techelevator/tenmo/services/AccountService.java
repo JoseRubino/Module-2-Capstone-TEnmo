@@ -28,4 +28,5 @@ public class AccountService {
                 HttpMethod.GET, entity, BigDecimal.class).getBody();
         System.out.println("Your current balance is: " + balance);
     }
+
 }
