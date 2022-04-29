@@ -38,6 +38,7 @@ public class TransferService {
                 HttpMethod.GET, entity, Transfer.class).getBody();
         System.out.println("Your transaction history: " + transfer);
     }
+
     public void createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
