@@ -3,9 +3,19 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 
-public interface TransferDao {
+import java.util.List;
 
-    public Transfer get(int id) throws TransferNotFoundException;
-    public Transfer create(Transfer transfer) throws TransferNotFoundException;
-    public Transfer update(Transfer transfer) throws TransferNotFoundException;
+public interface TransferDao {
+    void createTransfer(Transfer transfer);
+
+    List<Transfer> getTransfersByUserId(int userId);
+
+    Transfer getTransferByTransferId(int transferId);
+
+    List<Transfer> getAllTransfers();
+
+    List<Transfer> getPendingTransfers(int userId);
+
+    void updateTransfer(Transfer transfer);
 }
+

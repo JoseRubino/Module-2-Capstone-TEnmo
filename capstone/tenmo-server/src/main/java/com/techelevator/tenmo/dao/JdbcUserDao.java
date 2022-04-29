@@ -21,126 +21,11 @@ public class JdbcUserDao implements UserDao {
 
     private static final BigDecimal STARTING_BALANCE = new BigDecimal("1000.00");
 
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private JdbcTransferDao transferDao;
-
-
-
 
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-
-
-    @Override
-    public User getUserByAccount(long id) {
-        User user = new User();
-
-        String sql = "SELECT t.user_id "
-                + "FROM tenmo_user AS t "
-                + "JOIN accounts AS a "
-                + " ON t.user_id = a.user_id "
-                + "WHERE a.account_id = ?;";
-
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, id);
-
-        if(row.next())
-        {
-            int userId = row.getInt("user_id");
-            user = findByUserId(userId);
-            return user;
-        }
-        throw new AccountNotFoundException();
-
-    }
-
-
-    @Override
-    public User findByUserId(long id) {
-        String sql = "select * from tenmo_user where user_id = ?;";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
-        if (result.next())
-        {
-            User user = mapRowToUser(result);
-            return user;
-        }
-        throw new UsernameNotFoundException("User ID " + id + " was not found.");
-
-    }
-
-    @Override
-    public List<Transfer> getTransfersByUser(long id) throws TransferNotFoundException {
-        List<Transfer> transfers = new ArrayList<Transfer>();
-        int accountId = getAccountByUserId(id);
-
-        String sql = "SELECT t.transfer_id "
-                + ",t.account_from "
-                + ",t.account_to "
-                + ",tt.transfer_type_desc AS type "
-                + ",ts.transfer_status_desc AS status "
-                + ",t.amount "
-                + "FROM transfers AS t "
-                + "JOIN transfer_types AS tt "
-                + "	ON t.transfer_type_id = tt.transfer_type_id "
-                + "JOIN transfer_statuses AS ts "
-                + "ON t.transfer_status_id = ts.transfer_status_id "
-                + "WHERE t.account_from = ? "
-                + "OR t.account_to = ?; ";
-
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
-
-        while(row.next()) {
-            Transfer transfer = transferDao.get(row.getInt("transfer_id"));
-            transfers.add(transfer);
-        }
-
-        return transfers;
-    }
-
-
-    @Override
-    public BigDecimal getBalanceById(long userId) {
-        int accountId = getAccountByUserId(userId);
-        BigDecimal balance = BigDecimal.valueOf(0);
-
-        String sql = "SELECT balance "
-                + "FROM accounts "
-                + "WHERE account_id = ?;";
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, accountId);
-
-        if(row.next())
-        {
-            balance = row.getBigDecimal("balance");
-        }
-
-        return balance;
-    }
-
-    @Override
-    public int getAccountByUserId(long id) {
-        int accountId = -1;
-
-        String sql = "SELECT a.account_id "
-                + "FROM accounts AS a "
-                + "JOIN tenmo_user AS t "
-                + "ON a.user_id = t.user_id "
-                + "WHERE t.user_id = ?;";
-
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, id);
-
-        if(row.next())
-        {
-            accountId = row.getInt("account_id");
-        }
-
-        return accountId;
-    }
-
 
     @Override
     public int findIdByUsername(String username) {
@@ -176,7 +61,6 @@ public class JdbcUserDao implements UserDao {
     }
 
 
-
     @Override
     public boolean create(String username, String password) {
 
@@ -200,6 +84,20 @@ public class JdbcUserDao implements UserDao {
 
         return true;
     }
+
+    @Override
+    public User getUserByUserId(int id) {
+        String sql = "SELECT user_id, username FROM users WHERE user_id = ?";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
+        User user = null;
+        if(result.next()) {
+            user = new User();
+            user.setId(result.getLong("user_id"));
+            user.setUsername(result.getString("username"));
+        }
+        return user;
+    }
+
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();

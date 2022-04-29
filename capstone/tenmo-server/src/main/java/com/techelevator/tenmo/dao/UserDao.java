@@ -13,15 +13,8 @@ public interface UserDao {
 
     User findByUsername(String username);
 
-    User getUserByAccount(long id);
+    User getUserByUserId(int id);
 
-    User findByUserId(long id);
-
-    List<Transfer> getTransfersByUser(long userId) throws TransferNotFoundException;
-
-    BigDecimal getBalanceById(long id);
-
-    int getAccountByUserId(long id);
 
     int findIdByUsername(String username);
 

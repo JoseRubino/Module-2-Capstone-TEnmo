@@ -18,16 +18,8 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/transfers")
 public class TransferController {
-    @Autowired
-    TransferDao transferDao;
-    @Autowired
-    UserDao userDao;
 
-    @GetMapping()
-    public List<Transfer> getCurrentUserTransfers(Principal principal) throws TransferNotFoundException {
-        int id = userDao.findIdByUsername(principal.getName());
-        List<Transfer> transfers = userDao.getTransfersByUser(id);
 
-        return transfers;
+
     }
-}
+

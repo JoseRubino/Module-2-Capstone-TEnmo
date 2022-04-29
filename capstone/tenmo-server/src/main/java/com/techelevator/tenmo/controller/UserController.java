@@ -2,7 +2,7 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.Transfer;
+
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/balance/{id}")
     public BigDecimal getBalance(@PathVariable int id){
-    User user = userDao.findByUserId(id);
+    User user = userDao.getUserByUserId(id);
     return accountDao.getCurrentBalance(user.getId());
     }
 
