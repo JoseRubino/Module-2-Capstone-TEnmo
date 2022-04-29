@@ -45,11 +45,10 @@ public class TransferService {
         headers.setBearerAuth(authenticatedUser.getToken());
         HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
-        String url = baseUrl + "transfers/" + transfer.getTransferId();
+        String url = baseUrl + "transfers/new";
 
         try {
-            Transfer newTransfer = restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class).getBody();
-
+            restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class).getBody();
         } catch(RestClientResponseException e) {
             if (e.getMessage().contains("You're broke, bud")) {
                 System.out.println("You don't have enough money for that transaction.");

@@ -26,7 +26,7 @@ public class TransferController {
     TransferDao transferDao;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping()
+    @GetMapping("/new")
     public void addTransfer(@RequestBody Transfer transfer) throws InsufficientFundsException {
 //
 //        BigDecimal amountToTransfer = transfer.getAmount();
@@ -35,11 +35,12 @@ public class TransferController {
 //
 ////        accountFrom.getBalance().sendMoney(amountToTransfer);
 ////        accountTo.getBalance().receiveMoney(amountToTransfer);
-
         transferDao.createTransfer(transfer);
+        accountDao.withdrawFromAccount(transfer.getAccountFrom(), transfer.getAmount());
+        accountDao.depositToAccount(transfer.getAccountTo(), transfer.getAmount());
 
-        accountDao.updateAccount(accountFrom);
-        accountDao.updateAccount(accountTo);
+//        accountDao.updateAccount(accountFrom);
+//        accountDao.updateAccount(accountTo);
     }
 
     @GetMapping("/user/{userId}")
@@ -51,7 +52,7 @@ public class TransferController {
         return transferDao.getTransferByTransferId(id);
     }
 
-    @GetMapping(path="/transfers")
+    @GetMapping(path="/list_transfers")
     public List<Transfer> getAllTransfers() {
         return transferDao.getAllTransfers();
     }

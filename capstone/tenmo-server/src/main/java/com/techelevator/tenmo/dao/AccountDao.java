@@ -14,9 +14,9 @@ public interface AccountDao {
 
     void updateAccount(Account accountToUpdate);
 
-    void depositToAccount(Account accountToUpdate, BigDecimal amount);
+    void depositToAccount(int accountId, BigDecimal amount);
 
-    void withdrawFromAccount(Account accountToUpdate, BigDecimal amount);
+    void withdrawFromAccount(int accountId, BigDecimal amount);
 }
 
 

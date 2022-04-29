@@ -28,7 +28,7 @@ public class JdbcAccountDao implements AccountDao {
     }
     @Override
     public Account getAccountByUserID(int userId) {
-        String sql = "SELECT account_id, user_id, balance FROM accounts WHERE user_id = ?";
+        String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         Account account = null;
         if(result.next()) {
@@ -39,7 +39,7 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public Account getAccountByAccountID(int accountId) {
-        String sql = "SELECT account_id, user_id, balance FROM accounts WHERE account_id = ?";
+        String sql = "SELECT account_id, user_id, balance FROM account join user using(user_id) WHERE user_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
         Account account = null;
         if(result.next()) {
@@ -52,20 +52,20 @@ public class JdbcAccountDao implements AccountDao {
     public void updateAccount(Account accountToUpdate) {}
 
     @Override
-    public void depositToAccount(Account accountToUpdate, BigDecimal amount) {
+    public void depositToAccount(int accountId, BigDecimal amount) {
         String sql = "UPDATE accounts " +
                 "SET balance = ? " +
                 "WHERE account_id = ?";
 
-        jdbcTemplate.update(sql, accountToUpdate.getBalance().add(amount), accountToUpdate.getAccountId());
+        jdbcTemplate.update(sql, getAccountByAccountID(accountId).getBalance().add(amount), accountId);
     }
     @Override
-    public void withdrawFromAccount(Account accountToUpdate, BigDecimal amount) {
+    public void withdrawFromAccount(int accountId, BigDecimal amount) {
         String sql = "UPDATE accounts " +
                 "SET balance = ? " +
                 "WHERE account_id = ?";
 
-        jdbcTemplate.update(sql, accountToUpdate.getBalance().subtract(amount), accountToUpdate.getAccountId());
+        jdbcTemplate.update(sql, getAccountByAccountID(accountId).getBalance().subtract(amount), accountId);
     }
 
     private Account mapResultsToAccount(SqlRowSet result) {
