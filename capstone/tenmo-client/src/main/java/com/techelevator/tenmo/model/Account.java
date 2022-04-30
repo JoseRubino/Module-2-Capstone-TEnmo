@@ -4,10 +4,12 @@ public class Account {
     private int accountId;
     private int userId;
 
-    public Account(int accountId, int userId) {
-        this.accountId = accountId;
-        this.userId = userId;
-    }
+//    public Account(){}
+
+//    public Account(int accountId, int userId) {
+//        this.accountId = accountId;
+//        this.userId = userId;
+//    }
     public int getAccountId() {
         return accountId;
     }

@@ -28,18 +28,21 @@ public class JdbcAccountDao implements AccountDao {
     }
     @Override
     public Account getAccountByUserID(int userId) {
+        System.out.println(userId);
         String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         Account account = null;
         if(result.next()) {
             account = mapResultsToAccount(result);
         }
+        System.out.println(account);
         return account;
     }
 
     @Override
     public Account getAccountByAccountID(int accountId) {
-        String sql = "SELECT account_id, user_id, balance FROM account join user using(user_id) WHERE user_id = ?";
+        System.out.println(accountId);
+        String sql = "SELECT account_id, user_id, balance FROM account join user using(user_id) WHERE account_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
         Account account = null;
         if(result.next()) {
@@ -71,10 +74,7 @@ public class JdbcAccountDao implements AccountDao {
     private Account mapResultsToAccount(SqlRowSet result) {
         int accountId = result.getInt("account_id");
         int userAccountId = result.getInt("user_id");
-        BigDecimal accountBalance = new BigDecimal(result.getInt("balance"));
-//        Balance balance = new Balance();
-//        String accountBalance = result.getString("balance");
-//        balance.setBalance(new BigDecimal(accountBalance));
+        BigDecimal accountBalance = result.getBigDecimal("balance");
         return new Account(accountId, userAccountId, accountBalance);
     }
     }

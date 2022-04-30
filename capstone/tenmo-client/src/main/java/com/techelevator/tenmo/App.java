@@ -114,11 +114,13 @@ public class App {
             }
         }
         int senderId = consoleService.promptForInt("Please select ID of the user you want to send bucks to: ");
-
         BigDecimal sendAmount = consoleService.promptForBigDecimal("Please enter how much dollar you want to sned: ");
 
-        transferService.createTransfer(currentUser, new Transfer(accountService.getAccountByUserId(currentUser),
-                accountService.getAccountByUserId(userService.getUserByUserId(currentUser, senderId)), sendAmount));
+//        accountService.getAccountBalance(currentUser);
+        User user = userService.getUserByUserId(currentUser, senderId);
+
+        transferService.createTransfer(currentUser, new Transfer(accountService.getAccountByUserId(currentUser.getUser()), accountService.getAccountByUserId(user), sendAmount));
+
 		
 	}
 

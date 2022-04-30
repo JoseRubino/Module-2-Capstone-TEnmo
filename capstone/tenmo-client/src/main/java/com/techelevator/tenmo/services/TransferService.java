@@ -10,10 +10,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
 public class TransferService {
     private final String baseUrl;
     private final RestTemplate restTemplate = new RestTemplate();
@@ -39,7 +35,7 @@ public class TransferService {
         System.out.println("Your transaction history: " + transfer);
     }
 
-    public void createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
+    public AuthenticatedUser createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
@@ -58,6 +54,7 @@ public class TransferService {
         } catch(ResourceAccessException e) {
             System.out.println("Could not complete request due to server network issue. Please try again.");
         }
+        return authenticatedUser;
     }
 
 

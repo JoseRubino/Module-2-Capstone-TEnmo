@@ -2,10 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -34,10 +31,12 @@ public class UserService {
         }
         return users;
     }
-    public AuthenticatedUser getUserByUserId(AuthenticatedUser user, int userId) {
+    public User getUserByUserId(AuthenticatedUser user, int userId) {
 
-        HttpEntity<AuthenticatedUser> entity = makeEntity(user);
-        return restTemplate.exchange(baseUrl + "users/" + userId, HttpMethod.GET, entity, AuthenticatedUser.class).getBody();
+//        HttpEntity<AuthenticatedUser> entity = makeEntity(user);
+        ResponseEntity<User> response = restTemplate.exchange(baseUrl + "users/" + userId, HttpMethod.GET, makeEntity(user), User.class);
+//        return .getBody();
+        return response.getBody();
     }
 
     private HttpEntity<AuthenticatedUser> makeEntity(AuthenticatedUser authenticatedUser) {

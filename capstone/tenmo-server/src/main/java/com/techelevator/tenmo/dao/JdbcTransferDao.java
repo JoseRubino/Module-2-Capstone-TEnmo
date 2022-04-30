@@ -24,7 +24,7 @@ public class JdbcTransferDao implements TransferDao {
     public List<Transfer> getTransfersByUserId(int userId) {
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfers " +
-                "JOIN accounts ON accounts.account_id = transfers.account_from OR accounts.account_id = transfers.account_to " +
+                "JOIN account ON account.account_id = transfer.account_from OR account.account_id = transfers.account_to " +
                 "WHERE user_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         List<Transfer> transfers = new ArrayList<>();
@@ -95,9 +95,9 @@ public class JdbcTransferDao implements TransferDao {
         int transferStatusId = result.getInt("transfer_status_id");
         int accountFrom = result.getInt("account_from");
         int accountTo = result.getInt("account_to");
-        String amountDouble = result.getString("amount");
+        BigDecimal amount = result.getBigDecimal("amount");
 
-        Transfer transfer = new Transfer(transferId, transferTypeId, transferStatusId, accountFrom, accountTo, new BigDecimal(amountDouble));
+        Transfer transfer = new Transfer(transferId, transferTypeId, transferStatusId, accountFrom, accountTo, amount);
         return transfer;
     }
 }
