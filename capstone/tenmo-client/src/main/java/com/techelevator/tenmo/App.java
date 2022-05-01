@@ -116,12 +116,10 @@ public class App {
         int senderId = consoleService.promptForInt("Please select ID of the user you want to send bucks to: ");
         BigDecimal sendAmount = consoleService.promptForBigDecimal("Please enter how much dollar you want to sned: ");
 
-//        accountService.getAccountBalance(currentUser);
         User user = userService.getUserByUserId(currentUser, senderId);
 
-        transferService.createTransfer(currentUser, new Transfer(accountService.getAccountByUserId(currentUser.getUser()), accountService.getAccountByUserId(user), sendAmount));
-
-		
+        transferService.createTransfer(currentUser, new Transfer(accountService.getAccountByUserId(currentUser.getUser(), currentUser.getToken()),
+                accountService.getAccountByUserId(user, currentUser.getToken()), sendAmount));
 	}
 
 	private void requestBucks() {

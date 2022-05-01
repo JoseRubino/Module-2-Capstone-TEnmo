@@ -28,14 +28,12 @@ public class JdbcAccountDao implements AccountDao {
     }
     @Override
     public Account getAccountByUserID(int userId) {
-        System.out.println(userId);
         String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         Account account = null;
         if(result.next()) {
             account = mapResultsToAccount(result);
         }
-        System.out.println(account);
         return account;
     }
 

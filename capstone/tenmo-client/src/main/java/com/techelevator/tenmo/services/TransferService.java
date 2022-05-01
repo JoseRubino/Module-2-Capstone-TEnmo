@@ -35,26 +35,21 @@ public class TransferService {
         System.out.println("Your transaction history: " + transfer);
     }
 
-    public AuthenticatedUser createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
+    public void createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
-        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
+        HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
 
         String url = baseUrl + "transfers/new";
 
         try {
             restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class).getBody();
         } catch(RestClientResponseException e) {
-            if (e.getMessage().contains("You're broke, bud")) {
-                System.out.println("You don't have enough money for that transaction.");
-            } else {
-                System.out.println("Could not complete request. Code: " + e.getRawStatusCode());
-            }
+            System.out.println("Could not complete request. Code: " + e.getRawStatusCode());
         } catch(ResourceAccessException e) {
-            System.out.println("Could not complete request due to server network issue. Please try again.");
+            System.out.println(e.getMessage());
         }
-        return authenticatedUser;
     }
 
 

@@ -27,10 +27,10 @@ public class AccountService {
         System.out.println("Your current balance is: $" + balance);
     }
 
-    public Account getAccountByUserId(User user) {
+    public Account getAccountByUserId(User user, String token) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        httpHeaders.setBearerAuth(user.getToken());
+        httpHeaders.setBearerAuth(token);
         HttpEntity<User> entity = new HttpEntity<>(user, httpHeaders);
 
         ResponseEntity<Account> account = restTemplate.exchange(baseUrl + "users/account/" + user.getId(), HttpMethod.GET, entity, Account.class);

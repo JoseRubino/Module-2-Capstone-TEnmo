@@ -25,8 +25,7 @@ public class TransferController {
     AccountDao accountDao;
     TransferDao transferDao;
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping("/new")
+    @RequestMapping(value = "/new", method = RequestMethod.PUT)
     public void addTransfer(@RequestBody Transfer transfer) throws InsufficientFundsException {
 //
 //        BigDecimal amountToTransfer = transfer.getAmount();
@@ -34,7 +33,7 @@ public class TransferController {
 //        Account accountTo = accountDao.getAccountByAccountID(transfer.getAccountTo());
 //
 ////        accountFrom.getBalance().sendMoney(amountToTransfer);
-////        accountTo.getBalance().receiveMoney(amountToTransfer);
+////        accountTo.getBalance().receiveMoney(amountToTransfer);v
         transferDao.createTransfer(transfer);
         accountDao.withdrawFromAccount(transfer.getAccountFrom(), transfer.getAmount());
         accountDao.depositToAccount(transfer.getAccountTo(), transfer.getAmount());

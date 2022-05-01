@@ -23,19 +23,15 @@ public class UserService {
         User[] users = null;
         try {
           users = restTemplate.exchange(baseUrl + "/users", HttpMethod.GET, makeEntity(authenticatedUser), User[].class).getBody();
-
         } catch (RestClientResponseException e) {
             System.out.println("Could not complete request");
-        }catch (ResourceAccessException e)  {
+        } catch (ResourceAccessException e)  {
             System.out.println("Could not complete request due to server issue");
         }
         return users;
     }
     public User getUserByUserId(AuthenticatedUser user, int userId) {
-
-//        HttpEntity<AuthenticatedUser> entity = makeEntity(user);
         ResponseEntity<User> response = restTemplate.exchange(baseUrl + "users/" + userId, HttpMethod.GET, makeEntity(user), User.class);
-//        return .getBody();
         return response.getBody();
     }
 

@@ -30,6 +30,7 @@ public class Transfer {
         this.accountFrom = accountFrom;
         this.accountTo = accountTo;
     }
+    public Transfer(){}
 
     public int getTransferId() {
         return transferId;
