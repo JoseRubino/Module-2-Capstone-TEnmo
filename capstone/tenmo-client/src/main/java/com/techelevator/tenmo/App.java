@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class App {
@@ -98,7 +99,7 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-        transferService.getTransfer(currentUser);
+        System.out.println(Arrays.toString(transferService.getAllTransfers(currentUser)));
 	}
 
 	private void viewPendingRequests() {

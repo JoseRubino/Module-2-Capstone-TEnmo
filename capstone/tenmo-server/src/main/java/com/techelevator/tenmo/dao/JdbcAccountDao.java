@@ -39,7 +39,7 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public Account getAccountByAccountID(int accountId) {
-        System.out.println(accountId);
+
         String sql = "SELECT account_id, user_id, balance FROM account join user using(user_id) WHERE account_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
         Account account = null;

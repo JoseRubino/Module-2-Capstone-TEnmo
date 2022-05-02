@@ -19,27 +19,17 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/transfers")
+@RequestMapping(path = "transfers/")
 public class TransferController {
-
     AccountDao accountDao;
     TransferDao transferDao;
 
+
     @RequestMapping(value = "/new", method = RequestMethod.PUT)
     public void addTransfer(@RequestBody Transfer transfer) throws InsufficientFundsException {
-//
-//        BigDecimal amountToTransfer = transfer.getAmount();
-//        Account accountFrom = accountDao.getAccountByAccountID(transfer.getAccountFrom());
-//        Account accountTo = accountDao.getAccountByAccountID(transfer.getAccountTo());
-//
-////        accountFrom.getBalance().sendMoney(amountToTransfer);
-////        accountTo.getBalance().receiveMoney(amountToTransfer);v
         transferDao.createTransfer(transfer);
         accountDao.withdrawFromAccount(transfer.getAccountFrom(), transfer.getAmount());
         accountDao.depositToAccount(transfer.getAccountTo(), transfer.getAmount());
-
-//        accountDao.updateAccount(accountFrom);
-//        accountDao.updateAccount(accountTo);
     }
 
     @GetMapping("/user/{userId}")
@@ -51,7 +41,7 @@ public class TransferController {
         return transferDao.getTransferByTransferId(id);
     }
 
-    @GetMapping(path="/list_transfers")
+    @RequestMapping(path="getAll", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers() {
         return transferDao.getAllTransfers();
     }

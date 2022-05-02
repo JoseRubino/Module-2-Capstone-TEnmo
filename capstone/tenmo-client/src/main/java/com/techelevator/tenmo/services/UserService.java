@@ -30,6 +30,7 @@ public class UserService {
         }
         return users;
     }
+
     public User getUserByUserId(AuthenticatedUser user, int userId) {
         ResponseEntity<User> response = restTemplate.exchange(baseUrl + "users/" + userId, HttpMethod.GET, makeEntity(user), User.class);
         return response.getBody();
